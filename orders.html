@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - POLITE MEAT SUPPLIERS</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <!-- Same sidebar as dashboard.html -->
+        </aside>
+        
+        <main class="admin-content">
+            <header class="admin-header">
+                <h2>Order Management</h2>
+                <div class="admin-actions">
+                    <div class="search-box">
+                        <input type="text" id="order-search" placeholder="Search orders...">
+                        <button id="search-order-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="order-filters">
+                <button class="filter-btn active" data-status="all">All Orders</button>
+                <button class="filter-btn" data-status="pending">Pending</button>
+                <button class="filter-btn" data-status="confirmed">Confirmed</button>
+                <button class="filter-btn" data-status="delivered">Delivered</button>
+                <button class="filter-btn" data-status="cancelled">Cancelled</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-list">
+                        <!-- Orders loaded via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination">
+                <button id="prev-page" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-page" disabled>Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="order-detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details - <span id="modal-order-id"></span></h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail-columns">
+                    <div class="order-customer-info">
+                        <h4>Customer Information</h4>
+                        <p><strong>Name:</strong> <span id="detail-customer-name"></span></p>
+                        <p><strong>Email:</strong> <span id="detail-customer-email"></span></p>
+                        <p><strong>Phone:</strong> <span id="detail-customer-phone"></span></p>
+                        <p><strong>Address:</strong> <span id="detail-customer-address"></span></p>
+                    </div>
+                    
+                    <div class="order-delivery-info">
+                        <h4>Delivery Information</h4>
+                        <p><strong>Date:</strong> <span id="detail-delivery-date"></span></p>
+                        <p><strong>Time:</strong> <span id="detail-delivery-time"></span></p>
+                        <p><strong>Notes:</strong> <span id="detail-delivery-notes"></span></p>
+                    </div>
+                </div>
+                
+                <div class="order-items-detail">
+                    <h4>Order Items</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-order-items">
+                            <!-- Order items loaded via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="order-totals-detail">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="detail-subtotal">£0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Delivery:</span>
+                        <span id="detail-delivery-fee">£0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="detail-grand-total">£0.00</span>
+                    </div>
+                </div>
+                
+                <div class="order-status-actions">
+                    <h4>Update Status</h4>
+                    <select id="update-status-select">
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button id="update-status-btn" class="btn">Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

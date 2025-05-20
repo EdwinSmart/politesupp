@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - POLITE MEAT SUPPLIERS</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h1>POLITE MEAT</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            
+            <nav class="admin-menu">
+                <ul>
+                    <li class="active">
+                        <a href="dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="orders.html">
+                            <i class="fas fa-shopping-bag"></i> Orders
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-box"></i> Products
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-users"></i> Customers
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-chart-line"></i> Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="admin-logout">
+                <a href="#" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </aside>
+        
+        <main class="admin-content">
+            <header class="admin-header">
+                <h2>Dashboard Overview</h2>
+                <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
+                </div>
+            </header>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-orders">0</h3>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-pound-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-revenue">£0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pending-orders">0</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="completed-orders">0</h3>
+                        <p>Completed Orders</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-sections">
+                <section class="recent-orders">
+                    <h3>Recent Orders</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-list">
+                                <!-- Recent orders loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="orders.html" class="btn view-all">View All Orders</a>
+                </section>
+                
+                <section class="quick-links">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <a href="#" class="action-card">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add New Product</span>
+                        </a>
+                        <a href="#" class="action-card">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add New Admin</span>
+                        </a>
+                        <a href="#" class="action-card">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>View Reports</span>
+                        </a>
+                        <a href="#" class="action-card">
+                            <i class="fas fa-cog"></i>
+                            <span>System Settings</span>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

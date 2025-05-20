@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - POLITE MEAT SUPPLIERS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .account-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .account-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .tab-btn.active {
+            border-bottom-color: #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .orders-table th, .orders-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .orders-table th {
+            background-color: #f5f5f5;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .status-pending {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .status-completed {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .status-cancelled {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .account-details {
+            max-width: 600px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-label {
+            width: 150px;
+            font-weight: 500;
+        }
+        
+        .logout-btn {
+            padding: 8px 15px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Your existing header -->
+    </header>
+
+    <section class="account-section">
+        <div class="container account-container">
+            <div class="account-header">
+                <h1>My Account</h1>
+                <button class="logout-btn" id="logout-btn">Logout</button>
+            </div>
+            
+            <div class="account-tabs">
+                <button class="tab-btn active" data-tab="orders">My Orders</button>
+                <button class="tab-btn" data-tab="details">Account Details</button>
+            </div>
+            
+            <div id="orders-tab" class="tab-content active">
+                <h2>Order History</h2>
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Tracking</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-orders">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="details-tab" class="tab-content">
+                <h2>Account Information</h2>
+                <div class="account-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div id="account-name"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Email:</div>
+                        <div id="account-email"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Member Since:</div>
+                        <div id="account-joined"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Your existing footer -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const user = getCurrentUser();
+            
+            // Load user details
+            document.getElementById('account-name').textContent = user.name;
+            document.getElementById('account-email').textContent = user.email;
+            document.getElementById('account-joined').textContent = new Date(user.joined).toLocaleDateString();
+            
+            // Load user orders
+            loadUserOrders(user.id);
+            
+            // Set up tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Set up logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                logoutUser();
+                window.location.href = 'index.html';
+            });
+        });
+        
+        function loadUserOrders(userId) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const userOrders = orders.filter(order => order.userId === userId);
+            const ordersContainer = document.getElementById('user-orders');
+            
+            ordersContainer.innerHTML = '';
+            
+            if (userOrders.length === 0) {
+                ordersContainer.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px;">
+                            You haven't placed any orders yet.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Sort orders by date (newest first)
+            userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            userOrders.forEach(order => {
+                const orderDate = new Date(order.date);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${orderDate.toLocaleDateString()}</td>
+                    <td>${order.items.length} item(s)</td>
+                    <td>£${order.total.toFixed(2)}</td>
+                    <td><span class="status-badge status-${order.status.toLowerCase()}">${order.status}</span></td>
+                    <td>${order.trackingNumber || 'N/A'}</td>
+                `;
+                ordersContainer.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

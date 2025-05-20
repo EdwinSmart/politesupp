@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - POLITE MEAT SUPPLIERS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>POLITE MEAT SUPPLIERS</h1>
+                <p>Premium Halal Meat Delivery</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Our Products</a></li>
+                    <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count">0</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="checkout-page">
+        <div class="container">
+            <h1>Checkout</h1>
+            
+            <div class="checkout-steps">
+                <div class="step active">1. Delivery Details</div>
+                <div class="step">2. Payment</div>
+                <div class="step">3. Confirmation</div>
+            </div>
+            
+            <form id="checkout-form">
+                <div class="checkout-columns">
+                    <div class="checkout-form">
+                        <h2>Delivery Information</h2>
+                        
+                        <div class="form-group">
+                            <label for="full-name">Full Name *</label>
+                            <input type="text" id="full-name" name="full-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Delivery Address *</label>
+                            <textarea id="address" name="address" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="delivery-date">Preferred Delivery Date *</label>
+                            <input type="date" id="delivery-date" name="delivery-date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="delivery-time">Preferred Delivery Time</label>
+                            <select id="delivery-time" name="delivery-time">
+                                <option value="anytime">Anytime</option>
+                                <option value="morning">Morning (9am-12pm)</option>
+                                <option value="afternoon">Afternoon (12pm-5pm)</option>
+                                <option value="evening">Evening (5pm-9pm)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">Delivery Notes</label>
+                            <textarea id="notes" name="notes" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <h2>Your Order</h2>
+                        <div class="order-items" id="checkout-items">
+                            <!-- Order items loaded via JavaScript -->
+                        </div>
+                        
+                        <div class="order-totals">
+                            <div class="total-row">
+                                <span>Subtotal</span>
+                                <span id="checkout-subtotal">£0.00</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Delivery</span>
+                                <span id="checkout-delivery">£4.99</span>
+                            </div>
+                            <div class="total-row grand-total">
+                                <span>Total</span>
+                                <span id="checkout-total">£4.99</span>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-methods">
+                            <h3>Payment Method</h3>
+                            <div class="payment-option">
+                                <input type="radio" id="card-payment" name="payment" value="card" checked>
+                                <label for="card-payment">Credit/Debit Card</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="cash-payment" name="payment" value="cash">
+                                <label for="cash-payment">Cash on Delivery</label>
+                            </div>
+                        </div>
+                        
+                        <div class="terms-agreement">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">I agree to the <a href="#">terms and conditions</a></label>
+                        </div>
+                        
+                        <button type="submit" class="btn place-order-btn">Place Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Same footer as index.html -->
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>

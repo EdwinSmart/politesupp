@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - POLITE MEAT SUPPLIERS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles */
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #3498db;
+            --dark-color: #333;
+            --light-color: #f9f9f9;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .logo p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--primary-color);
+        }
+        
+        /* Cart Page Styles */
+        .cart-page {
+            padding: 60px 0;
+            min-height: 70vh;
+        }
+        
+        .cart-page h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark-color);
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 40px 0;
+            display: none;
+        }
+        
+        .cart-empty i {
+            font-size: 60px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .cart-empty p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .cart-content {
+            display: none;
+        }
+        
+        .cart-items {
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .product-cell {
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-cell img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+            padding: 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .remove-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .cart-summary {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .cart-summary h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: var(--dark-color);
+        }
+        
+        .summary-details {
+            margin-bottom: 25px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 40px 0 0;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .footer-section p, .footer-section ul li, .footer-section a {
+            color: #bbb;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .social-icons a {
+            color: #fff;
+            font-size: 20px;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            font-size: 24px;
+            color: #bbb;
+        }
+        
+        .copyright {
+            background-color: #111;
+            padding: 15px 0;
+            text-align: center;
+        }
+        
+        .copyright p {
+            color: #bbb;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .legal-links a {
+            color: #bbb;
+            font-size: 12px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .product-cell {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-cell img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>POLITE MEAT SUPPLIERS</h1>
+                <p>Premium Halal Meat Delivery</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Our Products</a></li>
+                    <li><a href="cart.html" class="active"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count">0</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="cart-page">
+        <div class="container">
+            <h1>Your Shopping Cart</h1>
+            
+            <div id="cart-empty" class="cart-empty">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <a href="products.html" class="btn">Browse Products</a>
+            </div>
+            
+            <div id="cart-content" class="cart-content">
+                <div class="cart-items">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-items-list">
+                            <!-- Cart items loaded via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-details">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="cart-subtotal">£0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery</span>
+                            <span id="cart-delivery">£4.99</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span id="cart-total">£4.99</span>
+                        </div>
+                    </div>
+                    <button id="checkout-btn" class="btn checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>POLITE MEAT SUPPLIERS</h3>
+                    <p>Providing premium quality halal meat with convenience and trust since 2015.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i>&nbsp;&nbsp;info@politemeatsuppliers.com</p>
+                    <p><i class="fas fa-phone"></i>&nbsp;&nbsp;0707079702</p>
+                    <p><i class="fas fa-map-marker-alt"></i>&nbsp;Moi Drive Nairobi, Kenya</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <p>&copy; 2023 POLITE MEAT SUPPLIERS. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize cart
+            updateCartDisplay();
+            
+            // Load cart items
+            loadCartItems();
+            
+            // Set up checkout button
+            document.getElementById('checkout-btn').addEventListener('click', proceedToCheckout);
+        });
+        
+        function loadCartItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsList = document.getElementById('cart-items-list');
+            
+            cartItemsList.innerHTML = '';
+            
+            if (cart.length === 0) {
+                document.getElementById('cart-empty').style.display = 'block';
+                document.getElementById('cart-content').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('cart-empty').style.display = 'none';
+            document.getElementById('cart-content').style.display = 'block';
+            
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="product-cell">
+                            <img src="${item.image}" alt="${item.name}">
+                            <span>${item.name}</span>
+                        </div>
+                    </td>
+                    <td>£${item.price.toFixed(2)}</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-id="${item.id}">
+                            <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        </div>
+                    </td>
+                    <td class="item-total">£${(item.price * item.quantity).toFixed(2)}</td>
+                    <td><button class="remove-btn" data-id="${item.id}">Remove</button></td>
+                `;
+                cartItemsList.appendChild(row);
+                
+                subtotal += item.price * item.quantity;
+            });
+            
+            // Update cart summary
+            updateCartSummary(subtotal);
+            
+            // Add event listeners to quantity controls
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', decreaseQuantity);
+            });
+            
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', increaseQuantity);
+            });
+            
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('change', updateQuantity);
+            });
+            
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', removeItem);
+            });
+        }
+        
+        function updateCartSummary(subtotal) {
+            const deliveryFee = 4.99;
+            const total = subtotal + deliveryFee;
+            
+            document.getElementById('cart-subtotal').textContent = `£${subtotal.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `£${total.toFixed(2)}`;
+        }
+        
+        function decreaseQuantity(e) {
+            const productId = e.target.getAttribute('data-id');
+            updateCartItemQuantity(productId, -1);
+        }
+        
+        function increaseQuantity(e) {
+            const productId = e.target.getAttribute('data-id');
+            updateCartItemQuantity(productId, 1);
+        }
+        
+        function updateQuantity(e) {
+            const productId = e.target.getAttribute('data-id');
+            const newQuantity = parseInt(e.target.value);
+            
+            if (newQuantity < 1) {
+                e.target.value = 1;
+                return;
+            }
+            
+            updateCartItemQuantity(productId, 0, newQuantity);
+        }
+        
+        function updateCartItemQuantity(productId, change, newQuantity = null) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const itemIndex = cart.findIndex(item => item.id === productId);
+            
+            if (itemIndex !== -1) {
+                if (newQuantity !== null) {
+                    cart[itemIndex].quantity = newQuantity;
+                } else {
+                    cart[itemIndex].quantity += change;
+                    
+                    if (cart[itemIndex].quantity < 1) {
+                        cart[itemIndex].quantity = 1;
+                    }
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCartItems();
+                updateCartDisplay();
+            }
+        }
+        
+        function removeItem(e) {
+            const productId = e.target.getAttribute('data-id');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const updatedCart = cart.filter(item => item.id !== productId);
+            
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+            loadCartItems();
+            updateCartDisplay();
+        }
+        
+        function updateCartDisplay() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+        
+       function proceedToCheckout() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    if (cart.length === 0) {
+        alert('Your cart is empty. Please add some products before checking out.');
+        return;
+    }
+    
+    // Generate a random tracking number
+    const trackingNumber = 'TRK' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+    
+    // Get order details
+    const order = {
+        id: 'ORD-' + Date.now().toString(),
+        date: new Date().toISOString(),
+        items: [...cart],
+        subtotal: calculateSubtotal(cart),
+        delivery: 4.99,
+        total: calculateSubtotal(cart) + 4.99,
+        status: 'Pending',
+        trackingNumber: trackingNumber,
+        customer: {
+            name: "Guest Customer", // Replace with actual customer data if you have user accounts
+            email: "guest@example.com"
+        }
+    };
+    
+    // Save order to localStorage
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+    
+    // Clear the cart
+    localStorage.removeItem('cart');
+    updateCartDisplay();
+    loadCartItems();
+    
+    // Redirect to order confirmation page
+    window.location.href = `order-confirmation.html?orderId=${order.id}`;
+}
+
+function calculateSubtotal(cart) {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+}
+    </script>
+</body>
+</html>
